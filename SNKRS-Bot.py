@@ -24,7 +24,9 @@ print (TheCVV)
 print ('Go Here: https://www.nike.com/launch?s=upcoming')
 print ('Click on the upcoming shoe/sneaker you wish to purchase, copy the link and post it below.')
 DaLink = input('Whats the link of the upcoming sneaker you wish to buy? Paste it Here: ')
-print (DaLink)
+shoesize = input('Enter shoe size: ')
+DaURL = (DaLink + '?size=' + shoesize)
+print (DaURL)
 print ('')
 print ('This bot has a Schedule feature. Below you will be asked at which hour, minute and second of the day you would like the bot to start. This bot uses military time, 6:00PM = 18:00:00, and 10:00AM = 10:00:00. Be as specific as you want.')
 Hour = int(input('Which hour of the day would you like this bot to start: '))
@@ -45,8 +47,6 @@ else:
     print ('Continuing without Proxy...')
     driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.get('https://www.nike.com/launch/')
-
-print ('Remember to Move the Mouse Around when this bot activates.') #STEP 3
 
 #-------------------------Time-------------------------
 def Schedule(hour1, min2, sec3):
@@ -73,27 +73,18 @@ else:
 #Time will be placed here
 #------------------------------------SNEAKER LINK GOES BELOW---------------------
 driver.implicitly_wait(900)
-driver.get(DaLink)   #THIS WAS CORRECT
+driver.get(DaURL)   #THIS WAS CORRECT
 #STEP 6    -     #GET THE LINK
 
 #Get this link from the Nike SNKRS Website, under upcoming.
 #Find the sneaker you plan to buy on release day and click on it.
-#Copt that link and post it here
+#Copy that link and post it here
 
 
-LowestSize = "//li[@data-qa='size-available']"
-driver.find_element_by_xpath(LowestSize).click()
-print ('Clicked on Sneaker Size. Move the mouse around so it DOESNT get stuck')
-#Will choose the first size avaliable
-#May need to add some code to make the picking process more specific
-
-
-Buy = "//button[@data-qa='feed-buy-cta']"
+Buy = "//*[@id='root']/div/div/div[1]/div/div[3]/div[2]/div/section[1]/div[2]/aside/div/div[2]/div/button"
 wait = WebDriverWait(driver,3)
 wait.until(EC.presence_of_element_located((By.XPATH, Buy)))
 
-sleep(1) #Only have this here so it doesn't pick more than one size
-#Can delete this to speed things up but it may grab a bigger size
 driver.find_element_by_xpath(Buy).click()
 #driver.find_element_by_xpath(Buy).click()
 #driver.find_element_by_xpath(Buy).click()
@@ -106,11 +97,11 @@ wait.until(EC.presence_of_element_located((By.XPATH, LoginPopUp)))
 
 driver.find_element_by_name('emailAddress').send_keys(email)
 driver.find_element_by_name('password').send_keys(password)
-LoginButton = "//input[@value='LOG IN']"
+LoginButton = "//input[@value='SIGN IN']"
 driver.find_element_by_xpath(LoginButton).click()
 print ('Logged In')
 
-SaveNContinue = "//button[@data-qa='save-button']" #Need this xpath
+SaveNContinue = "//*[@id='checkout-sections']/div[3]/div/div/div[6]/button" #Need this xpath
 wait = WebDriverWait(driver,500)
 wait.until(EC.presence_of_element_located((By.XPATH, SaveNContinue)))
 
@@ -119,7 +110,7 @@ driver.switch_to_frame(frame)
 #Switches inside the frame
 
 CVV = "//input[@data-shortname='cvv']"
-driver.find_element_by_xpath(CVV).send_keys(TheCVV)
+driver.find_element_by_xpath(CVV).send_keys(TheCVV) #Sends CVV to website
 print ('Entered CVV')
 
 #driver.switch_to.default_content()
@@ -127,7 +118,7 @@ print ('Switches out the frame')
 
 sleep(Stop)
 
-SaveNContinue = "//button[@data-qa='save-button']"
+SaveNContinue = "//*[@id='checkout-sections']/div[3]/div/div/div[6]/button"
 driver.find_element_by_xpath(SaveNContinue).click() #May have to manually click Save & Continue Button
 print ('Entered CVV and Checked Out')
 
